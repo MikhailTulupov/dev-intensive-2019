@@ -1,5 +1,6 @@
 package ru.skillbranch.devintensive.models
 
+import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
 // DTO
@@ -13,6 +14,10 @@ data class User( // primary constructor
     val lastVisit: Date? = null,
     val isOnline: Boolean = false
 ) {
+
+    init{
+        println("His alive is her name is $firstName $lastName")
+    }
 
     constructor(id: String, firstName: String?, lastName: String?) : this(
         id = id,
@@ -33,9 +38,7 @@ data class User( // primary constructor
         fun makeUser(fullName: String?): User {
             lastId++
 
-            val parts = fullName?.split(" ")
-            val firstName = parts?.get(0)
-            val lastName = parts?.get(1)
+            val (firstName, lastName) = Utils.parseFullName(fullName)
 
             return User(id = "$lastId", firstName = firstName, lastName = lastName)
         }
