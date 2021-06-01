@@ -5,11 +5,14 @@ import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.skillbranch.devintensive.extensions.hideKeyBoard
 import ru.skillbranch.devintensive.models.Bender
 import java.util.*
 
@@ -17,7 +20,7 @@ const val KEY_STATUS = "STATUS"
 const val KEY_QUESTION = "QUESTION"
 const val KEY_ET_MESSAGE = "ET_MESSAGE"
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
 
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         messageEt = et_message
         sendBtn = iv_send
 
+        messageEt.setOnEditorActionListener(this)
         messageEt.setText(savedInstanceState?.getString(KEY_ET_MESSAGE) ?: "")
         val status = savedInstanceState?.getString(KEY_STATUS) ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString(KEY_QUESTION) ?: Bender.Question.NAME.name
@@ -52,14 +56,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send) {
-            val (phrase, color) = benderObj.listenAnswer(
-                messageEt.text.toString().lowercase(Locale.getDefault())
-            )
-            messageEt.setText("")
-            val (r, g, b) = color
-            benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
+            hideKeyBoard()
+            sendMessage()
         }
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            hideKeyBoard()
+            sendMessage()
+            return true
+        }
+        return false
+    }
+
+    fun sendMessage() {
+        val (phrase, color) = benderObj.listenAnswer(
+            messageEt.text.toString()
+        )
+        messageEt.setText("")
+        val (r, g, b) = color
+        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+        textTxt.text = phrase
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
