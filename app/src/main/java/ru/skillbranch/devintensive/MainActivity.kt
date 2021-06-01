@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -16,6 +15,7 @@ import java.util.*
 
 const val KEY_STATUS = "STATUS"
 const val KEY_QUESTION = "QUESTION"
+const val KEY_ET_MESSAGE = "ET_MESSAGE"
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         messageEt = et_message
         sendBtn = iv_send
 
+        messageEt.setText(savedInstanceState?.getString(KEY_ET_MESSAGE) ?: "")
         val status = savedInstanceState?.getString(KEY_STATUS) ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString(KEY_QUESTION) ?: Bender.Question.NAME.name
         benderObj = Bender(
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         outState.putString(KEY_STATUS, benderObj.status.name)
         outState.putString(KEY_QUESTION, benderObj.question.name)
+        outState.putString(KEY_ET_MESSAGE, et_message.text.toString())
         Log.d(
             "M_MainActivity",
             "onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}"
