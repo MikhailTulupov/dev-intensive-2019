@@ -1,11 +1,13 @@
 package ru.skillbranch.devintensive.ui.profile
 
+import android.annotation.SuppressLint
 import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -58,6 +60,8 @@ class ProfileActivity : AppCompatActivity() {
         )
 
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
+        if (isEditMode)
+            showCurrentMode(isEditMode)
 
         btn_edit.setOnClickListener {
             if (isEditMode) saveProfileInfo()
@@ -91,6 +95,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     // при срабатывании метода открывается режим редактирования
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun showCurrentMode(isEdit: Boolean) {
         val info = viewsFields.filter {
             setOf(
@@ -104,11 +109,10 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         for ((_, v) in info) {
-            v as EditText
             v.isFocusable = isEdit
             v.isFocusableInTouchMode = isEdit
             v.isEnabled = isEdit
-            v.background.alpha = if (isEdit) 255 else 0
+//            v.background.alpha = if (isEdit) 255 else 0
         }
 
         ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
