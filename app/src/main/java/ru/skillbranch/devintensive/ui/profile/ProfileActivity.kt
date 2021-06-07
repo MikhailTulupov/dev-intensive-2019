@@ -32,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         Log.d("M_MainActivity", "onCreate")
