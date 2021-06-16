@@ -60,9 +60,13 @@ object Utils {
             sb.append(
                 when (char.code) {
                     in a_zA_ZInterval -> char
-                    in ruA_ZInterval -> mapSymbols[char.lowercaseChar().toString()]?.uppercase(
-                        Locale.ROOT
-                    )
+                    in ruA_ZInterval -> mapSymbols[char.lowercase()]?.
+                    let {
+                        if(it.length == 2)
+                            it[0].uppercaseChar() + it[1].toString()
+                        else
+                            it.uppercase(Locale.getDefault())
+                    }
                     in rua_zInterval -> mapSymbols[char.toString()]
                     else -> if(char.isWhitespace())
                         divider
