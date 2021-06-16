@@ -2,6 +2,7 @@ package ru.skillbranch.devintensive.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.ImageView
 import ru.skillbranch.devintensive.R
 
@@ -19,6 +20,7 @@ class AspectRatioImageView @JvmOverloads constructor(
 
     init {
         if (attrs != null) {
+            Log.d("M_AspectRatioImageView","init block")
             // считываем атрибуты
             val a = context.obtainStyledAttributes(attrs, R.styleable.AspectRatioImageView)
             //получаем значение
