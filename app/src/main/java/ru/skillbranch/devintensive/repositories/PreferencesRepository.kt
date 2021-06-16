@@ -15,7 +15,8 @@ object PreferencesRepository {
     const val RATING = "RATING"
     const val RESPECT = "RESPECT"
     const val APP_THEME = "APP_THEME"
-    
+
+    // SP class постоянное хранилище данных на платформе android
     private val prefs: SharedPreferences by lazy {
         val ctx = App.applicationContext()
         PreferenceManager.getDefaultSharedPreferences(ctx)
